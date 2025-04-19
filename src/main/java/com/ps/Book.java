@@ -4,31 +4,33 @@ public class Book {
     private int id;
     private String isbn;
     private String title;
-    private static boolean isCheckedOut; //if bk is checked out
-    private static String checkedOutTo; //who the bk is checked out to
-//    private String[] checkedOutToName = new String[20]; //name of person who checked out stored in
-
-
+    private boolean isCheckedOut; //if bk is checked out
+    private String checkedOutTo; //who the bk is checked out to
 
     //Constructors
     public Book(int id, String isbn, String title) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
+        this.isCheckedOut = false;
+        this.checkedOutTo = "";
     }
 
-
     //checkOut method
-    public static void checkOut(String name) {
-        isCheckedOut = true;
-        checkedOutTo = name;
+    public void checkOut(String name) {
+        this.isCheckedOut = true;
+        this.checkedOutTo = name;
     }
 
     //checkIn method
-    public static void checkIn() {
+    public void checkIn() {
         checkedOutTo = ""; //empty the checkOutTo make it available for others
         isCheckedOut = false;
     }
+
+
+
+
 
 
 
@@ -48,15 +50,13 @@ public class Book {
         return title;
     }
 
-    public static boolean isIsCheckedOut() {
+    public boolean getIsCheckedOut() {
         return isCheckedOut;
     }
 
-    public static String getCheckedOutTo() {
+    public String getCheckedOutTo() {
         return checkedOutTo;
     }
-
-
 
     //Setter Methods
     public void setId(int id) {
@@ -71,12 +71,12 @@ public class Book {
         this.title = title;
     }
 
-    public static void setIsCheckedOut(boolean isCheckedOut) {
-        Book.isCheckedOut = isCheckedOut;
+    public void setIsCheckedOut(boolean isCheckedOut) {
+        this.isCheckedOut = isCheckedOut;
     }
 
-    public static void setCheckedOutTo(String checkedOutTo) {
-        Book.checkedOutTo = checkedOutTo;
+    public void setCheckedOutTo(String checkedOutTo) {
+        this.checkedOutTo = checkedOutTo;
     }
 
 
