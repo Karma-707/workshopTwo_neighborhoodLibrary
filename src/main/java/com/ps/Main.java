@@ -5,26 +5,26 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
     static boolean isFirstVisitAvailableBooks = true;
     static Book[] booksInventory = { //book objects
-            new Book(1, "978-4-90539-102-1", "Moonlit Bureaucracy"),
-            new Book(2, "978-3-74921-008-3", "Snowfall over Yokohama"),
-            new Book(3, "978-1-23459-999-6", "Blueprints for Justice"),
-            new Book(4, "978-0-81231-771-0", "Last Words from the Sky"),
-            new Book(5, "978-6-15621-451-9", "Leaves in the Fog"),
-            new Book(6, "978-2-51234-872-3", "Static Between Pages"),
-            new Book(7, "978-9-81345-673-5", "Wings Made of Ink"),
-            new Book(8, "978-7-09123-553-0", "Veins of Crimson Paper"),
-            new Book(9, "978-8-23456-909-1", "Symphony in Scarlet"),
-            new Book(10, "978-5-12678-240-2", "Vesper at the Morgue"),
-            new Book(11, "978-1-90432-233-2", "The Dead Can Read"),
-            new Book(12, "978-3-76453-871-0", "Black Petals in Bloom"),
-            new Book(13, "999-1-12345-019-3", "The Haunting Grammar of War"),
-            new Book(14, "978-4-81235-876-0", "Darkness is a Language"),
-            new Book(15, "978-4-81818-888-1", "Ten Thousand Umbrellas"),
-            new Book(16, "978-3-21234-748-9", "Paper Hearts in Firelight"),
-            new Book(17, "978-1-57245-918-7", "The Silence of Yellow Roses"),
-            new Book(18, "978-4-31900-431-2", "The Clockmaker’s Paradox"),
-            new Book(19, "978-3-84527-120-5", "My Shadow Walks Alone"),
-            new Book(20, "978-0-68129-337-1", "Ink, Bones, and Lanterns")
+            new Book(1, "978-4-90539-102-1", "Moonlit Bureaucracy", "Doppo Kunikida"),
+            new Book(2, "978-3-74921-008-3", "Snowfall over Yokohama", "Yukito Ayatsuji"),
+            new Book(3, "978-1-23459-999-6", "Blueprints for Justice", "Naomi Tanizaki"),
+            new Book(4, "978-0-81231-771-0", "Last Words from the Sky", "Osamu Dazai"),
+            new Book(5, "978-6-15621-451-9", "Leaves in the Fog", "Kenji Miyazawa"),
+            new Book(6, "978-2-51234-872-3", "Static Between Pages", "Edogawa Ranpo"),
+            new Book(7, "978-9-81345-673-5", "Wings Made of Ink", "Atsushi Nakajima"),
+            new Book(8, "978-7-09123-553-0", "Veins of Crimson Paper", "Ryūnosuke Akutagawa"),
+            new Book(9, "978-8-23456-909-1", "Symphony in Scarlet", "Chuuya Nakahara"),
+            new Book(10, "978-5-12678-240-2", "Vesper at the Morgue", "Kouyou Ozaki"),
+            new Book(11, "978-1-90432-233-2", "The Dead Can Read", "Hirotsu Ryurou"),
+            new Book(12, "978-3-76453-871-0", "Black Petals in Bloom", "Oda Sakunosuke"),
+            new Book(13, "999-1-12345-019-3", "The Haunting Grammar of War", "Sensei Yurei"),
+            new Book(14, "978-4-81235-876-0", "Darkness is a Language", "Kairo Gin"),
+            new Book(15, "978-4-81818-888-1", "Ten Thousand Umbrellas", "Ango Sakaguchi"),
+            new Book(16, "978-3-21234-748-9", "Paper Hearts in Firelight", "Yosano Akiko"),
+            new Book(17, "978-1-57245-918-7", "The Silence of Yellow Roses", "Sei Shōnagon"),
+            new Book(18, "978-4-31900-431-2", "The Clockmaker’s Paradox", "Kobo Abe"),
+            new Book(19, "978-3-84527-120-5", "My Shadow Walks Alone", "Sakutarō Hagiwara"),
+            new Book(20, "978-0-68129-337-1", "Ink, Bones, and Lanterns", "Takuboku Ishikawa")
     };
 
     public static void main(String[] args) throws InterruptedException {
@@ -45,9 +45,7 @@ public class Main {
                     String checkOutCommand = "";
                     String name;
 
-//                    if(isFirstVisitAvailableBooks) {
-                        availableBooks();
-//                    }
+                    availableBooks(); //show available books
 
                     //Loop as much as user wants
                     do {
@@ -55,11 +53,7 @@ public class Main {
                                 "\n\uD83D\uDFE2 Press [C] ➤ Check out a book (ID)" +
                                 "\n\uD83D\uDD19 Press [X] ➤ Go back to home screen");
                         System.out.print("\uD83D\uDC49 Enter your command: ");
-//                        scanner.nextLine(); //eat the white space
                         checkOutCommand = checkCheckOutCommand();
-//                        if(!isFirstVisitAvailableBooks) {
-//                            availableBooks(); //show available books
-//                        }
 
                         //Switch based on user input for checkout
                         switch (checkOutCommand.toLowerCase()) {
@@ -68,24 +62,31 @@ public class Main {
                                 name = scanner.nextLine().trim();
                                 System.out.print("\uD83D\uDD16Book ID: ");
                                 checkOutId = checkIntInput();
-                                int bookCount = 0;
+                                boolean bookFound = false;
                                 for (int i = 0; i < booksInventory.length; i++) {
-                                    bookCount++; //count how many books searched
-                                    //Check if book ID they're looking for AND if book is not checked out
-                                    if((booksInventory[i].getId() == checkOutId) && (!booksInventory[i].getIsCheckedOut())) {
-                                        booksInventory[i].checkOut(name);
-                                        System.out.println("✅ Book successfully checked out: \uD83D\uDCD8" + booksInventory[i].getTitle() +
-                                                " \uD83D\uDD16ID: " + booksInventory[i].getId());
-                                        break;
+                                    if (booksInventory[i].getId() == checkOutId) {
+                                        bookFound = true;
+                                        //Check if book ID they're looking for AND if book is not checked out
+                                        if (!booksInventory[i].getIsCheckedOut()) {
+                                            booksInventory[i].checkOut(name);
+                                            System.out.println("✅ Book successfully checked out!");
+                                            System.out.printf("\uD83D\uDD16ID: %-3d  \uD83D\uDD22ISBN: %-17s  \uD83D\uDCD8Title: %-35s  ✍️Author: %-20s\n",
+                                                    booksInventory[i].getId(),
+                                                    booksInventory[i].getIsbn(),
+                                                    booksInventory[i].getTitle(),
+                                                    booksInventory[i].getAuthor());
+                                            break;
+                                        }
+                                        //Check if book ID they're looking for AND book is already checked out
+                                        else if (booksInventory[i].getIsCheckedOut()) {
+                                            System.out.println("❌ Sorry, the book had already been checked out");
+                                            break;
+                                        }
                                     }
-                                    //Check if book ID they're looking for AND book is already checked out
-                                    else if ((booksInventory[i].getId() == checkOutId) && (booksInventory[i].getIsCheckedOut())) {
-                                        System.out.println("❌ Sorry, the book had already been checked out");
-                                    }
-                                    //If cant find the book id user is looking for after checking the whole book inventory; the book doesn't exist
-                                    if((bookCount == booksInventory.length) && (booksInventory[i].getId() != checkOutId) ) {
-                                        System.out.println("❌ That book ID doesn't exist");
-                                    }
+                                }
+                                //If cant find the book id user is looking for after checking the whole book inventory; the book doesn't exist
+                                if(!bookFound) {
+                                    System.out.println("❌ That book ID doesn't exist");
                                 }
                                 break;
                             case "x":
@@ -97,23 +98,24 @@ public class Main {
                     } while (!checkOutCommand.equalsIgnoreCase("X"));
                     break;
                 case 2: //Press 2: Show Checked Out Books
-                    //if no books are checked out dont let them return anything
+                    //if no books are checked out don't let them return anything
                     if(!checkedOutBooks()) {
                         break;
                     }
 
                     String checkInCommand = "";
                     int returnBookId;
-//                    checkedOutBooks(); //display checked out books
 
                     do {
                         System.out.println(
                                 "\n\uD83D\uDCE6 Press [R] ➤ Return a book" +
-                                        "\n\uD83D\uDD19 Press [X] ➤ Go back to home screen");
+                                "\n\uD83D\uDD19 Press [X] ➤ Go back to home screen");
                         System.out.print("\uD83D\uDC49 Enter your command: ");
                         checkInCommand = checkCheckInCommand();
 
-                        checkedOutBooks(); //display checked out books
+                        if(!checkInCommand.equalsIgnoreCase("x")) {
+                            checkedOutBooks(); //display checked out books
+                        }
 
                         //Switch based on user input for checkIn/return
                         switch (checkInCommand.toLowerCase()) {
@@ -126,14 +128,17 @@ public class Main {
                                     //Check if returned book id matches AND if book is checked out
                                     if ((booksInventory[i].getId() == returnBookId) && (booksInventory[i].getIsCheckedOut())) {
                                         booksInventory[i].checkIn(); //make book available to others to check out
-                                        System.out.println("✅ Book successfully returned: \uD83D\uDCD8" + booksInventory[i].getTitle() +
-                                                " \uD83D\uDD16ID: " + booksInventory[i].getId());
+                                        System.out.println("✅ Book successfully returned!");
+                                        System.out.printf("\uD83D\uDD16ID: %-3d  \uD83D\uDD22ISBN: %-17s  \uD83D\uDCD8Title: %-35s  ✍️Author: %-20s\n",
+                                                booksInventory[i].getId(),
+                                                booksInventory[i].getIsbn(),
+                                                booksInventory[i].getTitle(),
+                                                booksInventory[i].getAuthor());
                                         break;
                                     }
                                     //Check if book return ID isn't checked out, then you cant return it
                                     else if ((booksInventory[i].getId() == returnBookId) && (!booksInventory[i].getIsCheckedOut())) {
                                         System.out.println("❌ Sorry, the book wasn't checked out");
-//                                    System.out.println("❌ Sorry, the book wasn't checked out: " + booksInventory[i].getTitle() + " with \uD83D\uDD16ID: " + booksInventory[i].getId());
                                         break;
                                     }
                                     //If cant find the book id user is looking for after checking the whole book inventory; the book doesn't exist
@@ -149,7 +154,6 @@ public class Main {
                                 System.out.println("⚠\uFE0F Invalid input, please try again");
                         }
                     } while (!checkInCommand.equalsIgnoreCase("x"));
-
                     break;
                 case 0: //Press 0: Exits
                     System.out.println("\uD83D\uDD6F\uFE0F Thank you for visiting Stray Dogs Library! Until next time!");
@@ -183,10 +187,11 @@ public class Main {
                 Thread.sleep(250);
             }
             if (!booksInventory[i].getIsCheckedOut()) {
-                System.out.println(
-                        "\uD83D\uDD16ID: " + booksInventory[i].getId() +
-                        "\t\uD83D\uDD22ISBN: " + booksInventory[i].getIsbn() +
-                        "\t\uD83D\uDCD8Title: " + booksInventory[i].getTitle() );
+                System.out.printf("\uD83D\uDD16ID: %-3d  \uD83D\uDD22ISBN: %-17s  \uD83D\uDCD8Title: %-35s  ✍️Author: %-20s\n",
+                        booksInventory[i].getId(),
+                        booksInventory[i].getIsbn(),
+                        booksInventory[i].getTitle(),
+                        booksInventory[i].getAuthor());
             }
         }
         //After first run, make the book display not slow
@@ -199,11 +204,14 @@ public class Main {
         System.out.println("\n\uD83D\uDCDABooks currently checked out:");
         for (int i = 0; i < booksInventory.length; i++) {
             if(booksInventory[i].getIsCheckedOut()) {
-                System.out.println(
-                        "\uD83D\uDD16ID: " + booksInventory[i].getId() +
-                        "\n\uD83D\uDD22ISBN: " + booksInventory[i].getIsbn() +
-                        "\n\uD83D\uDCD8Title: " + booksInventory[i].getTitle() +
-                        "\n\uD83D\uDE4BChecked out person: " + booksInventory[i].getCheckedOutTo());
+                System.out.printf(
+                        "\uD83D\uDD16ID: %-3d\n\uD83D\uDD22ISBN: %-17s\n\uD83D\uDCD8Title: %-35s\n\uD83D\uDE4BChecked out person: %s\n",
+                        booksInventory[i].getId(),
+                        booksInventory[i].getIsbn(),
+                        booksInventory[i].getTitle(),
+                        booksInventory[i].getCheckedOutTo()
+                );
+
                 System.out.println();
                 count++;
             }
@@ -270,25 +278,3 @@ public class Main {
 
 }
 
-//    static String[] bookAuthorInventory = {
-//            "Doppo Kunikida",
-//            "Yukito Ayatsuji",
-//            "Naomi Tanizaki",
-//            "Osamu Dazai",
-//            "Kenji Miyazawa",
-//            "Edogawa Ranpo",
-//            "Atsushi Nakajima",
-//            "Ryūnosuke Akutagawa",
-//            "Chuuya Nakahara",
-//            "Kouyou Ozaki",
-//            "Hirotsu Ryurou",
-//            "Oda Sakunosuke",
-//            "Sensei Yurei",
-//            "Kairo Gin",
-//            "Ango Sakaguchi",
-//            "Yosano Akiko",
-//            "Sei Shōnagon",
-//            "Kobo Abe",
-//            "Sakutarō Hagiwara",
-//            "Takuboku Ishikawa"
-//    };
