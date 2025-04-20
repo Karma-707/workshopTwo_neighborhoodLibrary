@@ -205,10 +205,11 @@ public class Main {
         for (int i = 0; i < booksInventory.length; i++) {
             if(booksInventory[i].getIsCheckedOut()) {
                 System.out.printf(
-                        "\uD83D\uDD16ID: %-3d\n\uD83D\uDD22ISBN: %-17s\n\uD83D\uDCD8Title: %-35s\n\uD83D\uDE4BChecked out person: %s\n",
+                        "\uD83D\uDD16ID: %-3d\n\uD83D\uDD22ISBN: %-17s\n\uD83D\uDCD8Title: %-35s\n✍️Author: %-20s\n\uD83D\uDE4BChecked out person: %s\n",
                         booksInventory[i].getId(),
                         booksInventory[i].getIsbn(),
                         booksInventory[i].getTitle(),
+                        booksInventory[i].getAuthor(),
                         booksInventory[i].getCheckedOutTo()
                 );
 
