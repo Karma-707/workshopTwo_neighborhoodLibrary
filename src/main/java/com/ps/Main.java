@@ -29,7 +29,6 @@ public class Main {
     public static void main(String[] args) {
         int mainCommand;
         System.out.println("\n\n\uD83D\uDD0DWelcome to Stray Dogs Library!\uD83D\uDD0D");
-        String name;
         int checkOutId;
         do {
             menu(); //print menu to screen
@@ -38,22 +37,22 @@ public class Main {
 
             //Switch based on user input for menu
             switch (mainCommand) {
-                case 1:
+                case 1: //Press 1: Show Available Books
                     String checkOutCommand = "";
+                    String name;
 
                     //Loop as much as user wants
                     do {
-//                        System.out.println();
-                        availableBooks();
+                        availableBooks(); //show available books
                         System.out.println(
-                                "\nPress [C]: Check out a book (ID)\n" +
-                                "Press [X]: Go back to home screen");
+                                "\nPress [C]: Check out a book (ID)" +
+                                "\nPress [X]: Go back to home screen");
                         System.out.print("Enter your command: ");
                         scanner.nextLine(); //eat the white space
                         checkOutCommand = scanner.nextLine();
 
                         //Switch based on user input for checkout
-                        switch (checkOutCommand) {
+                        switch (checkOutCommand.toLowerCase()) {
                             case "c":
                                 System.out.print("\nChecking out a book!\nEnter your name: ");
                                 name = scanner.nextLine();
@@ -64,9 +63,8 @@ public class Main {
                                     bookCount++; //count how many books searched
                                     //Check if book ID they're looking for AND if book is not checked out
                                     if((booksInventory[i].getId() == checkOutId) && (!booksInventory[i].getIsCheckedOut())) {
-
                                         booksInventory[i].checkOut(name);
-                                        System.out.println("✅ Book successfully chceked out: " + booksInventory[i].getTitle() +
+                                        System.out.println("✅ Book successfully checked out: " + booksInventory[i].getTitle() +
                                                 " with ID#: " + booksInventory[i].getId());
                                         break;
                                     }
@@ -88,25 +86,54 @@ public class Main {
                         }
                     } while (!checkOutCommand.equalsIgnoreCase("X"));
                     break;
-                case 2:
-                    int count = 0;
-                    System.out.println("\n\uD83D\uDCDABooks currently checked out:");
-                    for (int i = 0; i < booksInventory.length; i++) {
-                        if(booksInventory[i].getIsCheckedOut()) {
-                            System.out.println(
-                                    "\uD83D\uDD16ID: " + booksInventory[i].getId() +
-                                    "\n\uD83D\uDD22ISBN: " + booksInventory[i].getIsbn() +
-                                    "\n\uD83D\uDCD8Title: " + booksInventory[i].getTitle() +
-                                    "\n\uD83D\uDE4BChecked out person: " + booksInventory[i].getCheckedOutTo());
-                            count++;
-                        }
+                case 2: //Press 2: Show Checked Out Books
+                    String checkInCommand = "";
+                    int returnBookId;
+                    checkedOutBooks(); //display checked out books
+                    System.out.println(
+                            "\nPress [R]: Return a book" +
+                            "\nPress [X]: Go back to home screen");
+                    System.out.print("Enter your command: ");
+                    scanner.nextLine(); //eat the white space
+                    checkInCommand = scanner.nextLine();
+
+                    //Switch based on user input for checkIn/return
+                    switch (checkInCommand.toLowerCase()) {
+                        case "r":
+                            System.out.print("\nReturning a book!\nID of the book your returning: ");
+                            returnBookId = scanner.nextInt();
+                            int bookCount2 = 0;
+                            for (int i = 0; i < booksInventory.length; i++) {
+                                bookCount2++;
+                                //Check if returned book id matches AND if book is checked out
+                                if ( (booksInventory[i].getId() == returnBookId) && (booksInventory[i].getIsCheckedOut()) ) {
+                                    booksInventory[i].checkIn(); //make book available to others to check out
+                                    System.out.println("✅ Book successfully returned: " + booksInventory[i].getTitle() +
+                                            " with ID#: " + booksInventory[i].getId());
+                                    break;
+                                }
+                                //Check if book return ID isnt checked out, then you cant return it
+                                else if ( (booksInventory[i].getId() == returnBookId) && (!booksInventory[i].getIsCheckedOut()) ) {
+                                    System.out.println("❌ Sorry, the book wasn't checked out: " + booksInventory[i].getTitle() +
+                                            " with ID#: " + booksInventory[i].getId());
+                                    break;
+                                }
+                                //If cant find the book id user is looking for after checking the whole book inventory; the book doesn't exist
+                                if((bookCount2 == booksInventory.length) && (booksInventory[i].getId() != returnBookId) ) {
+                                    System.out.println("❌ That book ID doesn't exist");
+                                }
+                            }
+                            break;
+                        case "x":
+                            System.out.println();
+                            break;
+                        default:
+                            System.out.println("Invalid input, please try again");
                     }
-                    if(count == 0) {
-                        System.out.println("Currently no books checked out\n\n");
-                    }
-                    System.out.println();
+
+
                     break;
-                case 0:
+                case 0: //Press 0: Exits
                     System.out.println("Thank you for visiting Stray Dogs Library! Have a safe trip!");
                     break;
                 default:
@@ -131,7 +158,7 @@ public class Main {
 
     //display current available books to user
     public static void availableBooks() {
-        System.out.println("\n\nCurrent Books not checked out");
+        System.out.println("\n\nAvailable Books to checked out");
         for (int i = 0; i < booksInventory.length; i++) {
             if (!booksInventory[i].getIsCheckedOut()) {
                 System.out.println(
@@ -141,6 +168,29 @@ public class Main {
             }
         }
     }
+
+    //display checked out books to user
+    public static void checkedOutBooks() {
+        int count = 0;
+        System.out.println("\n\uD83D\uDCDABooks currently checked out:");
+        for (int i = 0; i < booksInventory.length; i++) {
+            if(booksInventory[i].getIsCheckedOut()) {
+                System.out.println(
+                        "\uD83D\uDD16ID: " + booksInventory[i].getId() +
+                                "\n\uD83D\uDD22ISBN: " + booksInventory[i].getIsbn() +
+                                "\n\uD83D\uDCD8Title: " + booksInventory[i].getTitle() +
+                                "\n\uD83D\uDE4BChecked out person: " + booksInventory[i].getCheckedOutTo());
+                System.out.println();
+                count++;
+            }
+        }
+        if(count == 0) {
+            System.out.println("Currently no books checked out\n\n");
+        }
+        System.out.println();
+    }
+
+
 
 }
 
