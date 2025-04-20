@@ -33,7 +33,7 @@ public class Main {
         do {
             menu(); //print menu to screen
             System.out.print("Enter your command: ");
-            mainCommand = scanner.nextInt(); //Get user input of choice
+            mainCommand = checkMainCommand(); //Get user input of choice
 
             //Switch based on user input for menu
             switch (mainCommand) {
@@ -48,16 +48,16 @@ public class Main {
                                 "\nPress [C]: Check out a book (ID)" +
                                 "\nPress [X]: Go back to home screen");
                         System.out.print("Enter your command: ");
-                        scanner.nextLine(); //eat the white space
-                        checkOutCommand = scanner.nextLine();
+//                        scanner.nextLine(); //eat the white space
+                        checkOutCommand = checkCheckOutCommand();
 
                         //Switch based on user input for checkout
                         switch (checkOutCommand.toLowerCase()) {
                             case "c":
                                 System.out.print("\nChecking out a book!\nEnter your name: ");
-                                name = scanner.nextLine();
+                                name = scanner.nextLine().trim();
                                 System.out.print("\nBook ID: ");
-                                checkOutId = scanner.nextInt();
+                                checkOutId = checkIntInput();
                                 int bookCount = 0;
                                 for (int i = 0; i < booksInventory.length; i++) {
                                     bookCount++; //count how many books searched
@@ -94,14 +94,16 @@ public class Main {
                             "\nPress [R]: Return a book" +
                             "\nPress [X]: Go back to home screen");
                     System.out.print("Enter your command: ");
-                    scanner.nextLine(); //eat the white space
-                    checkInCommand = scanner.nextLine();
+//                    scanner.nextLine(); //eat the white space
+//                    scanner.nextLine(); //eat the white space
+
+                    checkInCommand = checkCheckInCommand();
 
                     //Switch based on user input for checkIn/return
                     switch (checkInCommand.toLowerCase()) {
                         case "r":
                             System.out.print("\nReturning a book!\nID of the book your returning: ");
-                            returnBookId = scanner.nextInt();
+                            returnBookId = checkIntInput();
                             int bookCount2 = 0;
                             for (int i = 0; i < booksInventory.length; i++) {
                                 bookCount2++;
@@ -112,7 +114,7 @@ public class Main {
                                             " with ID#: " + booksInventory[i].getId());
                                     break;
                                 }
-                                //Check if book return ID isnt checked out, then you cant return it
+                                //Check if book return ID isn't checked out, then you cant return it
                                 else if ( (booksInventory[i].getId() == returnBookId) && (!booksInventory[i].getIsCheckedOut()) ) {
                                     System.out.println("❌ Sorry, the book wasn't checked out: " + booksInventory[i].getTitle() +
                                             " with ID#: " + booksInventory[i].getId());
@@ -190,6 +192,49 @@ public class Main {
         System.out.println();
     }
 
+    //check main command is correct and then return it
+    public static int checkMainCommand() {
+        String userInput = scanner.nextLine();
+        //while user input isn't 0 or 1 or 2, keep letting them re-enter value
+        while (!userInput.matches("[0-2]")) { //regex for only 0-2 choice for input
+            System.out.print("Sorry invalid command. Please try again: ");
+            userInput = scanner.nextLine();
+        }
+        return Integer.parseInt(userInput); //return user value in int
+    }
+
+    //Check if user input is int then return int if true
+    public static int checkIntInput() {
+        String userInput = scanner.nextLine().trim();
+        //while user input isn't an int, keep letting them re-enter value
+        while (!userInput.matches("\\d+")) {
+            System.out.print("Sorry invalid command. Please try again: ");
+            userInput = scanner.nextLine();
+        }
+        return Integer.parseInt(userInput); //return user value in int
+    }
+
+    //Check if check out command is correct then return it
+    public static String checkCheckOutCommand() {
+        String userInput = scanner.nextLine().trim();
+        //while user input isn't c or x, keep letting them re-enter value
+        while (!userInput.matches("(?i)[cx]")) {
+            System.out.print("Sorry invalid command. Please try again: ");
+            userInput = scanner.nextLine();
+        }
+        return userInput; //return user command
+    }
+
+    //Check if check in command is correct then return it
+    public static String checkCheckInCommand() {
+        String userInput = scanner.nextLine().trim();
+        //while user input isn't c or x, keep letting them re-enter value
+        while (!userInput.matches("(?i)[rx]")) {
+            System.out.print("Sorry invalid command. Please try again: ");
+            userInput = scanner.nextLine();
+        }
+        return userInput; //return user command
+    }
 
 
 }
