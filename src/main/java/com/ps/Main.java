@@ -98,7 +98,7 @@ public class Main {
                     } while (!checkOutCommand.equalsIgnoreCase("X"));
                     break;
                 case 2: //Press 2: Show Checked Out Books
-                    //if no books are checked out don't let them return anything
+                    //if no books are checked out don't let them return anything; else return list checked out
                     if(!checkedOutBooks()) {
                         break;
                     }
@@ -113,9 +113,9 @@ public class Main {
                         System.out.print("\uD83D\uDC49 Enter your command: ");
                         checkInCommand = checkCheckInCommand();
 
-                        if(!checkInCommand.equalsIgnoreCase("x")) {
-                            checkedOutBooks(); //display checked out books
-                        }
+//                        if(!checkInCommand.equalsIgnoreCase("x")) {
+//                            checkedOutBooks(); //display checked out books
+//                        }
 
                         //Switch based on user input for checkIn/return
                         switch (checkInCommand.toLowerCase()) {
