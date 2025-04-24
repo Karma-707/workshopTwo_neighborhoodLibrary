@@ -163,7 +163,7 @@ public class Main {
                     break;
             }
 
-        } while (mainCommand != 0); //exits if user press 4 to quit
+        } while (mainCommand != 0); //exits if user press 0 to quit
 
     }
 
